@@ -12,11 +12,13 @@ button.style.display = 'none';  // hide results button till max count reached
 // initilize counters:
 
 let count = 0;
-let maxCount = 5; // change it to 25
+let maxCount = 25;
 
-let leftIndex;
-let midIndex;
-let rightIndex;
+let leftIndex =0;
+let midIndex = 0;
+let rightIndex= 0;
+
+let Values = []; // for how many times images shown
 
 
 /******************** template *********************/
@@ -73,7 +75,7 @@ function RenderImages(){
   leftIndex = randomIndex();
   midIndex = randomIndex();
   rightIndex = randomIndex();
-
+    
   // prevent duplicate photos
   while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex){
     leftIndex = randomIndex();
@@ -85,9 +87,35 @@ function RenderImages(){
   leftImage.src = Products.items[leftIndex].path;
   rightImage.src = Products.items[rightIndex].path;
   midImage.src = Products.items[midIndex].path;
+
+  // to find how many times photos show
+  Values.push(leftIndex,midIndex,rightIndex);
+
 };
 RenderImages();
 
+function countShow(arr){
+  arr.sort(); //source: https://stackoverflow.com/questions/19395257/how-to-count-duplicate-value-in-an-array-in-javascript
+
+  var current = null;
+  var cnt = 0;
+  for (var i = 0; i < arr.length; i++) {
+      if (arr[i] != current) {
+          if (cnt > 0) {
+              Products.items[current].timesShown = cnt;
+              console.log(current, cnt)
+          }
+          current = arr[i];
+          cnt = 1;
+      } else {
+          cnt++;
+      }
+  }
+  if (cnt > 0) {
+    Products.items[current].timesShown = cnt;
+    console.log(current, cnt)
+  }
+}
 
 /********************* event listeners *******************************/
 
@@ -120,19 +148,20 @@ function vote(e){
     leftImage.removeEventListener('click',vote);
     midImage.removeEventListener('click',vote);
     rightImage.removeEventListener('click',vote);
+    
   };
 
   // show button when max count reached
   if(maxCount === count){
-  button.style.display = 'inline-block'; 
+    button.style.display = 'inline-block'; 
   };
 };
-
 
 
 // show results when button clicked 
 button.addEventListener('click', function(){
 
+  countShow(Values); // times of showing
   let ul = document.getElementById('list'); // parent
 
   let li=null;
