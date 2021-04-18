@@ -3,3 +3,28 @@
   height: 400px;
   margin: 0 20px;
 }
+
+#results{
+  margin: 50px auto;
+  text-align: center;
+  
+}
+
+#btn1{
+  width: 200px;
+  height: 70px;
+  font-size: 20px;
+}
+
+#list{
+  margin-top: 20px;
+  margin-left: 35%;
+  text-align: left;
+}
+
+#list li{
+  list-style-type: disc;
+  font-size: 25px;
+  padding-bottom: 10px ;
+ 
+}

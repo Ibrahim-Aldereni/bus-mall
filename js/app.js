@@ -5,10 +5,13 @@
 let leftImage = document.getElementById('left');
 let midImage = document.getElementById('mid');
 let rightImage = document.getElementById('right');
+let button = document.getElementById('btn1');
+button.style.display = 'none';  // hide results button till max count reached 
+
 
 // initilize counters:
 
-let counts = 0;
+let count = 0;
 let maxCount = 5; // change it to 25
 
 let leftIndex;
@@ -23,7 +26,7 @@ function Products(name,path){
   this.name = name;
   this.path = path;
   this.timesShown = 0;
-  this.click = 0;
+  this.vote = 0;
 
   Products.items.push(this);  // to push each instance object here 
 }
@@ -82,11 +85,61 @@ function RenderImages(){
   leftImage.src = Products.items[leftIndex].path;
   rightImage.src = Products.items[rightIndex].path;
   midImage.src = Products.items[midIndex].path;
-
 };
 RenderImages();
 
 
+/********************* event listeners *******************************/
+
+// add event listener to each image:
+
+leftImage.addEventListener('click',vote);
+midImage.addEventListener('click',vote);
+rightImage.addEventListener('click',vote);
+
+
+// vote function:
+
+function vote(e){
+  count++;
+  
+  // limit clicks to specific number
+  if(maxCount >= count){
+
+    if(e.target.id === 'left'){
+      Products.items[leftIndex].vote++;
+    }else if(e.target.id === 'right'){
+      Products.items[rightIndex].vote++;
+    }else{
+      Products.items[midIndex].vote++;
+    }
+    RenderImages(); // to rendomize images each time we click
+    
+  }else{ // remove event listner when maxcount reached
+
+    leftImage.removeEventListener('click',vote);
+    midImage.removeEventListener('click',vote);
+    rightImage.removeEventListener('click',vote);
+  };
+
+  // show button when max count reached
+  if(maxCount === count){
+  button.style.display = 'inline-block'; 
+  };
+};
 
 
 
+// show results when button clicked 
+button.addEventListener('click', function(){
+
+  let ul = document.getElementById('list'); // parent
+
+  let li=null;
+  for(let i=0; i< Products.items.length;i++){
+    li = document.createElement('li');
+    ul.appendChild(li);
+    li.textContent = `${Products.items[i].name} had ( ${Products.items[i].vote} ) votes, and was seen ( ${Products.items[i].timesShown} ) times.`
+  };
+
+});
