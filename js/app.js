@@ -76,12 +76,17 @@ function RenderImages(){
     leftIndex = randomIndex();
     midIndex = randomIndex();
     rightIndex = randomIndex();
-  }
+  };
 
-
+  // set source attribute for the images:
+  leftImage.src = Products.items[leftIndex].path;
+  rightImage.src = Products.items[rightIndex].path;
+  midImage.src = Products.items[midIndex].path;
 
 };
 RenderImages();
+
+
 
 
 
