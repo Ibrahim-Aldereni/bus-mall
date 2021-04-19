@@ -114,8 +114,11 @@ function vote(e){
       Products.items[leftIndex].vote++;
     }else if(e.target.id === 'right'){
       Products.items[rightIndex].vote++;
-    }else{
+    }else if(e.target.id === 'mid'){
       Products.items[midIndex].vote++;
+    }else{
+      alert('please click one the photos'); // when user click outside any photo but inside the container
+      count--;
     }
     RenderImages(); // to rendomize images each time we click
     
@@ -148,4 +151,21 @@ function Results(){
 
   button.removeEventListener('click', Results); // to prevent repeating results
 
+  // chart code:
+  let ctx = document.getElementById('myChart').getContext('2d');
+  let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+            borderWidth: 1
+        }]
+    }
+  });
+
 };
+
+

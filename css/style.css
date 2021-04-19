@@ -1,6 +1,10 @@
+#images{
+  text-align: center;
+}
+
 .image{
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   margin: 0 20px;
 }
 
@@ -14,6 +18,9 @@
   width: 200px;
   height: 70px;
   font-size: 20px;
+  border-radius: 20px;
+  background-color: rgb(65, 63, 63);
+  color: white;
 }
 
 #list{
@@ -27,4 +34,14 @@
   font-size: 25px;
   padding-bottom: 10px ;
  
+}
+
+/************************ canvas *********************************/
+
+
+canvas{
+  margin: 10px auto;
+  width:70% !important; /* !important override the canvas style width*/
+  height:30% !important;
+
 }
