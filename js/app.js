@@ -96,21 +96,13 @@ function RenderImages(){
   midIndex = randomIndex();
   rightIndex = randomIndex();
 
-  // prevent duplicate photos
-  while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex){
-    leftIndex = randomIndex();
-    midIndex = randomIndex();
-    rightIndex = randomIndex();
-  };
-
   // get new values
   newValues = [leftIndex,midIndex,rightIndex];
 
-  // prevent image repeat at 2 next iterations
-  CheckRepeat();
-  
-  while(yes === true){
-    
+  // prevent duplicate photos and prevent image repeat at 2 next iterations
+  CheckRepeat(); // check for repeatition
+
+  while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex || yes){
     leftIndex = randomIndex();
     midIndex = randomIndex();
     rightIndex = randomIndex();
@@ -118,6 +110,7 @@ function RenderImages(){
 
     CheckRepeat();
   };
+
   
   // set source attribute for the images:
   leftImage.src = Products.items[leftIndex].path;
