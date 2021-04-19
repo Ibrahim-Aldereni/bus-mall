@@ -20,6 +20,9 @@ let midIndex = 0;
 let rightIndex= 0;
 
 let Values = []; // for how many times images shown
+let newValues=[];
+let repeated = [];
+let yes = null;
 
 let NamesArr = []; // for chart
 
@@ -70,15 +73,29 @@ function randomIndex(){
   return Math.floor(Math.random() * Products.items.length);
 };
 
+// check repeat at 2 next iterations
+
+function CheckRepeat(){
+    
+  for(let i=0;i < newValues.length;i++){
+    repeated.push(newValues.includes(Values[i]));
+  };
+  yes = repeated.includes(true);
+  repeated=[];
+}
+
 // render 3 images:
 
 function RenderImages(){
+
+  // get previous iteration values
+  Values = [leftIndex,midIndex,rightIndex];
 
   // give random number to each index
   leftIndex = randomIndex();
   midIndex = randomIndex();
   rightIndex = randomIndex();
-    
+
   // prevent duplicate photos
   while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex){
     leftIndex = randomIndex();
@@ -86,6 +103,22 @@ function RenderImages(){
     rightIndex = randomIndex();
   };
 
+  // get new values
+  newValues = [leftIndex,midIndex,rightIndex];
+
+  // prevent image repeat at 2 next iterations
+  CheckRepeat();
+  
+  while(yes === true){
+    
+    leftIndex = randomIndex();
+    midIndex = randomIndex();
+    rightIndex = randomIndex();
+    newValues = [leftIndex,midIndex,rightIndex];
+
+    CheckRepeat();
+  };
+  
   // set source attribute for the images:
   leftImage.src = Products.items[leftIndex].path;
   Products.items[leftIndex].timesShown++; // to find how many times photos show
