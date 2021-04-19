@@ -21,6 +21,7 @@ let rightIndex= 0;
 
 let Values = []; // for how many times images shown
 
+let NamesArr = []; // for chart
 
 /******************** template *********************/
 
@@ -32,6 +33,7 @@ function Products(name,path){
   this.vote = 0;
 
   Products.items.push(this);  // to push each instance object here 
+  NamesArr.push(this.name); // to add x-axis to chart
 }
 
 Products.items = []; // to have all instances in array 
@@ -106,7 +108,7 @@ container.addEventListener('click',vote);
 
 function vote(e){
   count++;
-  
+
   // limit clicks to specific number
   if(maxCount >= count){
 
@@ -143,7 +145,10 @@ function Results(){
   let ul = document.getElementById('list'); // parent
 
   let li=null;
+  let VotesArr = []; // for chart
   for(let i=0; i< Products.items.length;i++){
+    VotesArr.push(Products.items[i].vote); // to add votes to chart y-axis 
+
     li = document.createElement('li');
     ul.appendChild(li);
     li.textContent = `${Products.items[i].name} had ( ${Products.items[i].vote} ) votes, and was seen ( ${Products.items[i].timesShown} ) times.`
@@ -156,13 +161,21 @@ function Results(){
   let myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
+        labels: NamesArr, // products
+        datasets: [
+          {
             label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            data: VotesArr, // votes
             backgroundColor: ['rgba(255, 99, 132, 0.2)'],
             borderWidth: 1
-        }]
+          },
+          { // second object for number of time shown
+            label: '# of Times Shown',
+            data: [12, 19, 3, 5, 2, 3], // times shown
+            backgroundColor: ['rgba(99, 255, 132, 0.2)'],
+            borderWidth: 1
+          }
+        ]
     }
   });
 
