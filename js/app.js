@@ -5,6 +5,7 @@
 let leftImage = document.getElementById('left');
 let midImage = document.getElementById('mid');
 let rightImage = document.getElementById('right');
+let container = document.getElementById('images');
 let button = document.getElementById('btn1');
 button.style.display = 'none';  // hide results button till max count reached 
 
@@ -94,6 +95,8 @@ function RenderImages(){
 };
 RenderImages();
 
+// to show how many times image shown
+
 function countShow(arr){
   arr.sort(); //source: https://stackoverflow.com/questions/19395257/how-to-count-duplicate-value-in-an-array-in-javascript
 
@@ -121,10 +124,7 @@ function countShow(arr){
 
 // add event listener to each image:
 
-leftImage.addEventListener('click',vote);
-midImage.addEventListener('click',vote);
-rightImage.addEventListener('click',vote);
-
+container.addEventListener('click',vote);
 
 // vote function:
 
@@ -145,10 +145,8 @@ function vote(e){
     
   }else{ // remove event listner when maxcount reached
 
-    leftImage.removeEventListener('click',vote);
-    midImage.removeEventListener('click',vote);
-    rightImage.removeEventListener('click',vote);
-    
+    container.removeEventListener('click',vote);
+  
   };
 
   // show button when max count reached
@@ -159,9 +157,12 @@ function vote(e){
 
 
 // show results when button clicked 
-button.addEventListener('click', function(){
+button.addEventListener('click', Results);
+
+function Results(){
 
   countShow(Values); // times of showing
+
   let ul = document.getElementById('list'); // parent
 
   let li=null;
@@ -171,4 +172,6 @@ button.addEventListener('click', function(){
     li.textContent = `${Products.items[i].name} had ( ${Products.items[i].vote} ) votes, and was seen ( ${Products.items[i].timesShown} ) times.`
   };
 
-});
+  button.removeEventListener('click', Results); // to prevent repeating results
+
+};
