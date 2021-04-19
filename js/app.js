@@ -20,7 +20,11 @@ let midIndex = 0;
 let rightIndex= 0;
 
 let Values = []; // for how many times images shown
+let newValues=[];
+let repeated = [];
+let yes = null;
 
+let NamesArr = []; // for chart
 
 /******************** template *********************/
 
@@ -32,6 +36,7 @@ function Products(name,path){
   this.vote = 0;
 
   Products.items.push(this);  // to push each instance object here 
+  NamesArr.push(this.name); // to add x-axis to chart
 }
 
 Products.items = []; // to have all instances in array 
@@ -68,22 +73,45 @@ function randomIndex(){
   return Math.floor(Math.random() * Products.items.length);
 };
 
+// check repeat at 2 next iterations
+
+function CheckRepeat(){
+    
+  for(let i=0;i < newValues.length;i++){
+    repeated.push(newValues.includes(Values[i]));
+  };
+  yes = repeated.includes(true);
+  repeated=[];
+}
+
 // render 3 images:
 
 function RenderImages(){
+
+  // get previous iteration values
+  Values = [leftIndex,midIndex,rightIndex];
 
   // give random number to each index
   leftIndex = randomIndex();
   midIndex = randomIndex();
   rightIndex = randomIndex();
-    
-  // prevent duplicate photos
-  while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex){
+
+  // get new values
+  newValues = [leftIndex,midIndex,rightIndex];
+
+  // prevent duplicate photos and prevent image repeat at 2 next iterations
+  CheckRepeat(); // check for repeatition
+
+  while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex || yes){
     leftIndex = randomIndex();
     midIndex = randomIndex();
     rightIndex = randomIndex();
+    newValues = [leftIndex,midIndex,rightIndex];
+
+    CheckRepeat();
   };
 
+  
   // set source attribute for the images:
   leftImage.src = Products.items[leftIndex].path;
   Products.items[leftIndex].timesShown++; // to find how many times photos show
@@ -106,7 +134,7 @@ container.addEventListener('click',vote);
 
 function vote(e){
   count++;
-  
+
   // limit clicks to specific number
   if(maxCount >= count){
 
@@ -114,8 +142,11 @@ function vote(e){
       Products.items[leftIndex].vote++;
     }else if(e.target.id === 'right'){
       Products.items[rightIndex].vote++;
-    }else{
+    }else if(e.target.id === 'mid'){
       Products.items[midIndex].vote++;
+    }else{
+      alert('please click one the photos'); // when user click outside any photo but inside the container
+      count--;
     }
     RenderImages(); // to rendomize images each time we click
     
@@ -131,7 +162,6 @@ function vote(e){
   };
 };
 
-
 // show results when button clicked 
 button.addEventListener('click', Results);
 
@@ -140,7 +170,14 @@ function Results(){
   let ul = document.getElementById('list'); // parent
 
   let li=null;
+  let VotesArr = []; // for chart
+  let TimesShownArr = []; // for chart
+
   for(let i=0; i< Products.items.length;i++){
+
+    VotesArr.push(Products.items[i].vote); // to add votes to chart y-axis 
+    TimesShownArr.push(Products.items[i].timesShown); // to add timesShown to chart y-axis 
+
     li = document.createElement('li');
     ul.appendChild(li);
     li.textContent = `${Products.items[i].name} had ( ${Products.items[i].vote} ) votes, and was seen ( ${Products.items[i].timesShown} ) times.`
@@ -148,4 +185,29 @@ function Results(){
 
   button.removeEventListener('click', Results); // to prevent repeating results
 
+  // chart code:
+  let ctx = document.getElementById('myChart').getContext('2d');
+  let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: NamesArr, // products
+        datasets: [
+          {
+            label: '# of Votes',
+            data: VotesArr, // votes
+            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+            borderWidth: 1
+          },
+          {  // second object for number of time shown
+            label: '# of Times Shown',
+            data: TimesShownArr, // times shown
+            backgroundColor: ['rgba(99, 255, 132, 0.2)'],
+            borderWidth: 1
+          }
+        ]
+    }
+  });
+
 };
+
+
