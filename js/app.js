@@ -86,39 +86,15 @@ function RenderImages(){
 
   // set source attribute for the images:
   leftImage.src = Products.items[leftIndex].path;
+  Products.items[leftIndex].timesShown++; // to find how many times photos show
   rightImage.src = Products.items[rightIndex].path;
+  Products.items[rightIndex].timesShown++; // to find how many times photos show
   midImage.src = Products.items[midIndex].path;
-
-  // to find how many times photos show
-  Values.push(leftIndex,midIndex,rightIndex);
+  Products.items[midIndex].timesShown++; // to find how many times photos show
 
 };
 RenderImages();
 
-// to show how many times image shown
-
-function countShow(arr){
-  arr.sort(); //source: https://stackoverflow.com/questions/19395257/how-to-count-duplicate-value-in-an-array-in-javascript
-
-  var current = null;
-  var cnt = 0;
-  for (var i = 0; i < arr.length; i++) {
-      if (arr[i] != current) {
-          if (cnt > 0) {
-              Products.items[current].timesShown = cnt;
-              console.log(current, cnt)
-          }
-          current = arr[i];
-          cnt = 1;
-      } else {
-          cnt++;
-      }
-  }
-  if (cnt > 0) {
-    Products.items[current].timesShown = cnt;
-    console.log(current, cnt)
-  }
-}
 
 /********************* event listeners *******************************/
 
@@ -160,8 +136,6 @@ function vote(e){
 button.addEventListener('click', Results);
 
 function Results(){
-
-  countShow(Values); // times of showing
 
   let ul = document.getElementById('list'); // parent
 
