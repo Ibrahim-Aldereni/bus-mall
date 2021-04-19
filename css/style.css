@@ -38,10 +38,9 @@
 
 /************************ canvas *********************************/
 
-
 canvas{
   margin: 10px auto;
-  width:70% !important; /* !important override the canvas style width*/
+  width:80% !important; /* !important override the canvas style width*/
   height:30% !important;
 
 }

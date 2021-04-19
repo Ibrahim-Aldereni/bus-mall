@@ -136,7 +136,6 @@ function vote(e){
   };
 };
 
-
 // show results when button clicked 
 button.addEventListener('click', Results);
 
@@ -146,8 +145,12 @@ function Results(){
 
   let li=null;
   let VotesArr = []; // for chart
+  let TimesShownArr = []; // for chart
+
   for(let i=0; i< Products.items.length;i++){
+
     VotesArr.push(Products.items[i].vote); // to add votes to chart y-axis 
+    TimesShownArr.push(Products.items[i].timesShown); // to add timesShown to chart y-axis 
 
     li = document.createElement('li');
     ul.appendChild(li);
@@ -169,9 +172,9 @@ function Results(){
             backgroundColor: ['rgba(255, 99, 132, 0.2)'],
             borderWidth: 1
           },
-          { // second object for number of time shown
+          {  // second object for number of time shown
             label: '# of Times Shown',
-            data: [12, 19, 3, 5, 2, 3], // times shown
+            data: TimesShownArr, // times shown
             backgroundColor: ['rgba(99, 255, 132, 0.2)'],
             borderWidth: 1
           }
