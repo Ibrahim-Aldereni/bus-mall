@@ -39,7 +39,7 @@ function Products(name,path){
   NamesArr.push(this.name); // to add x-axis to chart
 }
 
-Products.items = []; // to have all instances in array 
+Products.items=[];
 
 /******************** Instances *********************/
 
@@ -121,8 +121,26 @@ function RenderImages(){
   Products.items[midIndex].timesShown++; // to find how many times photos show
 
 };
+GetLs(); // get values from local storage
 RenderImages();
 
+
+// set local storage values function:
+
+function SetLs(){
+  let arrString = JSON.stringify(Products.items); // to convert the array of objects to string
+  localStorage.setItem('AllProducts', arrString); // set local storage data of (AllProducts) as a key and the (array of objects) as a value 
+};
+
+// get local storage values function:
+
+function GetLs(){
+  let savedData = JSON.parse(localStorage.getItem('AllProducts'));
+
+  if(savedData){ // to check if there is nothing set to the local storage 
+    Products.items = savedData;
+  };
+};
 
 /********************* event listeners *******************************/
 
@@ -134,7 +152,7 @@ container.addEventListener('click',vote);
 
 function vote(e){
   count++;
-
+  
   // limit clicks to specific number
   if(maxCount >= count){
 
@@ -153,7 +171,7 @@ function vote(e){
   }else{ // remove event listner when maxcount reached
 
     container.removeEventListener('click',vote);
-  
+    
   };
 
   // show button when max count reached
@@ -166,6 +184,8 @@ function vote(e){
 button.addEventListener('click', Results);
 
 function Results(){
+
+  SetLs(); // To set all products in local storage
 
   let ul = document.getElementById('list'); // parent
 
@@ -209,5 +229,4 @@ function Results(){
   });
 
 };
-
 
